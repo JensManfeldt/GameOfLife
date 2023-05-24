@@ -6,8 +6,15 @@ version = 3
 name = "GameOfLife"
 version = "0.1.0"
 dependencies = [
+ "log-update",
  "nalgebra",
 ]
+
+[[package]]
+name = "ansi-escapes"
+version = "0.1.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "7e3c0daaaae24df5995734b689627f8fa02101bc5bbc768be3055b66a010d7af"
 
 [[package]]
 name = "approx"
@@ -29,6 +36,15 @@ name = "bytemuck"
 version = "1.13.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "17febce684fd15d89027105661fec94afb475cb995fbc59d2865198446ba2eea"
+
+[[package]]
+name = "log-update"
+version = "0.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "6f04940d2443eee57bf0a6e9751a96c1d8af76ff02d8380b1fc0cc67acd393e5"
+dependencies = [
+ "ansi-escapes",
+]
 
 [[package]]
 name = "matrixmultiply"
