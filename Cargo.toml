@@ -6,3 +6,12 @@ edition = "2021"
 [dependencies]
 log-update = "0.1.0"
 nalgebra = "0.32.2"
+yew = {version = "0.20.0", features = ["csr"]}
+
+[[bin]]
+name = "terminal"
+path = "src/bin/terminal.rs"
+
+[[bin]]
+name = "web"
+path = "src/bin/web.rs"
