@@ -1,28 +1,37 @@
-use std::{thread, time};
+use ndarray::Array2;
+use ndarray::s;
 
-use std::io::{stdout};
-extern crate log_update;
-use log_update::LogUpdate;
-
-use nalgebra::{SMatrix, Matrix, ViewStorage,Dyn, Const};
-pub type GameMatrix = SMatrix<i32, 10, 10>; 
-//Don't understand lifetimes
-//Also what does Dyn do, it just works with it here 
-type NeighbourMatrix<'a> = Matrix<i32, Dyn,Dyn, ViewStorage<'a, i32,Dyn,Dyn,Const<1>, Const<10>>>; 
-
-
-pub fn set_start(game: &mut GameMatrix){
-    game[(4,4)] = 1;
-    game[(4,5)] = 1;
-    game[(5,4)] = 1;
-
-    game[(7,7)] = 1;
-    game[(6,7)] = 1;
-    game[(7,6)] = 1;
+#[derive(Debug, PartialEq, Clone)]
+pub struct GameCell {
+    pub value: i32,
 }
 
-pub fn update(game: &GameMatrix) -> GameMatrix {
-    let mut update_matrix = GameMatrix::zeros();
+impl GameCell {
+    fn new() -> GameCell {
+        GameCell {value : 0}
+    }
+}
+
+type Cell = GameCell;
+type NeighbourMatrix = Array2<Cell>;
+type Game = Array2<Cell>;
+
+pub fn new_game(height: usize, width: usize) -> Game {
+    Array2::from_shape_fn((height, width), |(_i,_j)| Cell::new() )
+}
+
+pub fn set_start(game: &mut Game){
+    game[(4,4)].value = 1;
+    game[(4,5)].value = 1;
+    game[(5,4)].value = 1;
+
+    game[(7,7)].value = 1;
+    game[(6,7)].value = 1;
+    game[(7,6)].value = 1;
+}
+
+pub fn update(game: &Game) -> Game {
+    let mut update_matrix = Array2::from_shape_fn((10_usize, 10_usize), |(_i,_j)| Cell::new() );
 
     for i in 1..9 {
         for j in 1..9 {
@@ -32,13 +41,13 @@ pub fn update(game: &GameMatrix) -> GameMatrix {
 
             let living_neighbours: i32 = get_living_neightbours(&neighbour_matrix);
 
-            let cell_state = next_cell_state(living_neighbours, game[cell]);
+            let cell_state = next_cell_state(living_neighbours, game[cell].value);
 
             if cell_state {
-                update_matrix[cell] = 1;
+                update_matrix[cell].value = 1;
             }
             else {
-                update_matrix[cell] = 0;
+                update_matrix[cell].value = 0;
             }
 
         }
@@ -62,37 +71,33 @@ fn get_living_neightbours(sub_matrix: &NeighbourMatrix) -> i32 {
             if row == 1 && col == 1 {
                 continue;
             }
-            neightbour_count += sub_matrix[(row,col)] ;
+            neightbour_count += sub_matrix[(row,col)].value ;
         }
     }
     neightbour_count
 }
 
-pub fn get_neightbour_matrix(game: &GameMatrix, cell: (usize, usize)) -> NeighbourMatrix {
-    let top= (cell.0 - 1, cell.1 - 1) ;
-    let size = (3,3);
-    let neighbour_matrix : NeighbourMatrix = game.view(top,size);
-    neighbour_matrix
+pub fn get_neightbour_matrix(game: &Game, cell: (usize, usize)) -> NeighbourMatrix {
+    let neighbour_matrix = game.slice(s![cell.0 - 1 .. cell.0 + 2, cell.1 - 1 .. cell.1 + 2]);
+    neighbour_matrix.to_owned()
 }
 
 pub fn print_neighbour_matrix(matrix: &NeighbourMatrix, size: (usize,usize)){
     for i in 0..size.0{
         for j in 0..size.1{
-            print!("{:?}", matrix[(i,j)]);
+            print!("{:?}", matrix[(i,j)].value);
         }
         print!("\n");
     } 
 }
 
-pub fn print_game(game: &GameMatrix,size: (usize,usize)) -> String{
+pub fn print_game(game: &Array2<Cell>,size: (usize,usize)) -> String{
     let mut return_string = "".to_string();
     for i in 0..size.0{
         for j in 0..size.1{
-            return_string += &game[(i,j)].to_string();
-            //print!("{:?}", game[(i,j)]);
+            return_string += &game[(i,j)].value.to_string();
         }
         return_string += &'\n'.to_string();
-        //print!("\n");
     } 
     return_string
 }
