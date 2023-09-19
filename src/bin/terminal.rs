@@ -9,11 +9,11 @@ fn main() {
     let iteration = 100;
 
     let game_size = (10,10);
-    let mut game = GameMatrix::zeros();
+    let mut game = new_game(10, 10);
 
     set_start(&mut game);
 
-    for i in 0..iteration{
+    for _i in 0..iteration{
         game = update(&game);
 
         log_update.render(&print_game(&game, game_size)).unwrap();
