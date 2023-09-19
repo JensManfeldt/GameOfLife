@@ -1,7 +1,7 @@
 use ndarray::Array2;
 use ndarray::s;
 
-#[derive(Debug, PartialEq, Clone)]
+#[derive(Debug, PartialEq, Clone, Copy)]
 pub struct GameCell {
     pub value: i32,
 }
@@ -12,9 +12,9 @@ impl GameCell {
     }
 }
 
-type Cell = GameCell;
-type NeighbourMatrix = Array2<Cell>;
-type Game = Array2<Cell>;
+pub type Cell = GameCell;
+pub type NeighbourMatrix = Array2<Cell>;
+pub type Game = Array2<Cell>;
 
 pub fn new_game(height: usize, width: usize) -> Game {
     Array2::from_shape_fn((height, width), |(_i,_j)| Cell::new() )

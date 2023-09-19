@@ -1,26 +1,21 @@
-use GameOfLife::game::{self, GameMatrix};
+use GameOfLife::game::{Game, new_game};
 use yew::prelude::*;
 use stylist::yew::{use_style};
 use stylist::{Style, style, css};
+use ndarray::ArrayBase;
 
-
-struct Game {
-    cells: GameMatrix,
+struct GameWeb {
+    cells: Game,
     rows: usize, 
     coloums: usize,
 }
 
-impl Component for Game{
+impl Component for GameWeb{
     type Message = ();
     type Properties = ();
 
     fn create(ctx: &Context<Self>) -> Self {
-        let mut game = Self {cells: GameMatrix::zeros(), rows:10, coloums:10};
-        for i in 0..game.rows{
-            for j in 0..game.coloums{
-                game.cells[(i,j)] = 0;
-            }
-        }
+        let mut game = Self {cells: new_game(10, 10), rows: 10, coloums: 10};
         game 
     }
 
@@ -33,11 +28,13 @@ impl Component for Game{
                 </div>
             )
             }
-    }
+}
 
 
 
-fn cells_matrix(matrix: &GameMatrix) -> Html {
+
+
+fn cells_matrix(matrix: &Game) -> Html {
     let mut cells = vec![];
     for i in 0..10 {
         for j in 0..10 {
@@ -71,7 +68,7 @@ fn cells_matrix(matrix: &GameMatrix) -> Html {
 
 
         html!(
-        <div class={style}><p>{ format!("Cell Value {value}", value=cell_value) }</p></div>)
+        <div class={style}><p>{ format!("Cell Value {value:?}", value=cell_value) }</p></div>)
 
         
     }
@@ -79,11 +76,6 @@ fn cells_matrix(matrix: &GameMatrix) -> Html {
 }
 
 
-#[derive(Debug, PartialEq, Clone)]
-struct Cell{
-    value: i32,
-}
-
 fn main() {
-    yew::Renderer::<Game>::new().render();
+    yew::Renderer::<GameWeb>::new().render();
 }
