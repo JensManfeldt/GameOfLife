@@ -20,5 +20,7 @@ fn main() {
 
         thread::sleep(time::Duration::from_millis(1000));
         log_update.clear().unwrap();
+        
+        game = add_padding(&game, 1);
     }
 }

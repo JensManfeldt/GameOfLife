@@ -31,10 +31,11 @@ pub fn set_start(game: &mut Game){
 }
 
 pub fn update(game: &Game) -> Game {
-    let mut update_matrix = Array2::from_shape_fn((10_usize, 10_usize), |(_i,_j)| Cell::new() );
+    let curr_size = game.dim();
+    let mut update_matrix = Array2::from_shape_fn((curr_size.0, curr_size.1), |(_i,_j)| Cell::new() );
 
-    for i in 1..9 {
-        for j in 1..9 {
+    for i in 1..curr_size.0-1 {
+        for j in 1..curr_size.1-1 {
     
             let cell = (i as usize, j as usize);
             let neighbour_matrix = get_neightbour_matrix(game, cell);
@@ -75,6 +76,19 @@ fn get_living_neightbours(sub_matrix: &NeighbourMatrix) -> i32 {
         }
     }
     neightbour_count
+}
+
+pub fn add_padding(game: &Game, padding: usize) -> Game {
+    let curr_size = game.dim();
+    let mut new_game = new_game(curr_size.0 + (2 * padding) , curr_size.1 + (2 * padding));
+    println!("New game dim {:?}", new_game.dim());
+    for i in padding..curr_size.0 {
+        for j in padding..curr_size.1 {
+            new_game[(i,j)] = game[(i,j)];
+        }
+    }
+
+    new_game
 }
 
 pub fn get_neightbour_matrix(game: &Game, cell: (usize, usize)) -> NeighbourMatrix {
