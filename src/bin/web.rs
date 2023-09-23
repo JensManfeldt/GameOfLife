@@ -1,4 +1,4 @@
-use GameOfLife::game::{Game, Cell, new_game, set_start, update, add_padding, self};
+use GameOfLife::game::{Game, Cell, new_game, set_start, update, add_padding};
 use yew::{prelude::*};
 use stylist::{Style, style, css};
 
@@ -53,7 +53,7 @@ impl Component for GameWeb{
         match msg {
             Msg::Step(num)=> {
                 for it in 0..num{
-                    self.cells = GameOfLife::game::update(&self.cells)
+                    self.cells = update(&self.cells)
                 }
                 true
             },
@@ -112,7 +112,6 @@ fn cells_matrix(game_state: &Game) -> Html {
         <div class={style}><p>{ format!("Cell Value {value:?}", value=cell_value.value) }</p></div>
         )
 
-        
     }
     ).collect()
 }
