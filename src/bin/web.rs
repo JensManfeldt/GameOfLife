@@ -1,4 +1,4 @@
-use GameOfLife::game::{Game, Cell, new_game, set_start, update, add_padding};
+use GameOfLife::game::game_of_life::{Game, Cell, new_game, set_start, update, add_padding};
 use yew::{prelude::*};
 use stylist::{Style, style, css};
 
