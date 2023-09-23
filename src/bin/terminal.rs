@@ -1,8 +1,9 @@
 use log_update::LogUpdate;
 use std::{thread, time};
 use std::io::{stdout};
+use GameOfLife::utils::print_utils::print_game;
+use GameOfLife::game::game_of_life::{add_padding, update, set_start, new_game};
 
-use GameOfLife::game::*;
 fn main() {
 
     let mut log_update = LogUpdate::new(stdout()).unwrap();

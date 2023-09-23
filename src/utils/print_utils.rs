@@ -1,4 +1,4 @@
-use crate::game::game::{Game, NeighbourMatrix, Cell};
+use crate::game::game_of_life::{Game, NeighbourMatrix, Cell};
 
 pub fn print_neighbour_matrix(matrix: &NeighbourMatrix, size: (usize,usize)){
     for i in 0..size.0{
