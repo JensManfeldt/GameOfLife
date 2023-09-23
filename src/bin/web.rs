@@ -109,7 +109,8 @@ fn cells_matrix(game_state: &Game) -> Html {
 
 
         html!(
-        <div class={style}><p>{ format!("Cell Value {value:?}", value=cell_value.value) }</p></div>)
+        <div class={style}><p>{ format!("Cell Value {value:?}", value=cell_value.value) }</p></div>
+        )
 
         
     }
@@ -126,10 +127,5 @@ fn cell_to_color(cell: &Cell) -> Result<String, String> {
 
 
 fn main() {
-    let mut x = yew::Renderer::<GameWeb>::new();
-
-    let mut app = x.render();
-    for _i in 1..10{
-        app.update(());
-    }
+    yew::Renderer::<GameWeb>::new().render();
 }
