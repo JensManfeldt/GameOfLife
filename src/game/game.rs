@@ -17,7 +17,7 @@ pub type NeighbourMatrix = Array2<Cell>;
 pub type Game = Array2<Cell>;
 
 pub fn new_game(height: usize, width: usize) -> Game {
-    Array2::from_shape_fn((height, width), |(_i,_j)| Cell::new() )
+    Game::from_shape_fn((height, width), |(_i,_j)| Cell::new() )
 }
 
 pub fn set_start(game: &mut Game){
@@ -32,7 +32,7 @@ pub fn set_start(game: &mut Game){
 
 pub fn update(game: &Game) -> Game {
     let curr_size = game.dim();
-    let mut update_matrix = Array2::from_shape_fn((curr_size.0, curr_size.1), |(_i,_j)| Cell::new() );
+    let mut update_matrix = new_game(curr_size.0, curr_size.1);
 
     for i in 1..curr_size.0-1 {
         for j in 1..curr_size.1-1 {
@@ -94,24 +94,4 @@ pub fn add_padding(game: &Game, padding: usize) -> Game {
 pub fn get_neightbour_matrix(game: &Game, cell: (usize, usize)) -> NeighbourMatrix {
     let neighbour_matrix = game.slice(s![cell.0 - 1 .. cell.0 + 2, cell.1 - 1 .. cell.1 + 2]);
     neighbour_matrix.to_owned()
-}
-
-pub fn print_neighbour_matrix(matrix: &NeighbourMatrix, size: (usize,usize)){
-    for i in 0..size.0{
-        for j in 0..size.1{
-            print!("{:?}", matrix[(i,j)].value);
-        }
-        print!("\n");
-    } 
-}
-
-pub fn print_game(game: &Array2<Cell>,size: (usize,usize)) -> String{
-    let mut return_string = "".to_string();
-    for i in 0..size.0{
-        for j in 0..size.1{
-            return_string += &game[(i,j)].value.to_string();
-        }
-        return_string += &'\n'.to_string();
-    } 
-    return_string
 }
