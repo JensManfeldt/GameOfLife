@@ -9,7 +9,7 @@ pub fn print_neighbour_matrix(matrix: &NeighbourMatrix, size: (usize,usize)){
     } 
 }
 
-pub fn print_game(game: &Game ,size: (usize,usize)) -> String{
+pub fn print_game(game: &Game ,size: &(usize,usize)) -> String{
     let mut return_string = "".to_string();
     for i in 0..size.0{
         for j in 0..size.1{

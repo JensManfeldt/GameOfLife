@@ -17,11 +17,11 @@ fn main() {
     for _i in 0..iteration{
         game = update(&game);
 
-        log_update.render(&print_game(&game, game_size)).unwrap();
+        log_update.render(&print_game(&game, &game_size)).unwrap();
+
 
         thread::sleep(time::Duration::from_millis(1000));
         log_update.clear().unwrap();
         
-        game = add_padding(&game, 1);
     }
 }
