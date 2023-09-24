@@ -73,9 +73,9 @@ impl Component for GameWeb{
 
 fn cells_matrix(game_state: &Game) -> Html {
     let mut cells = vec![];
-    for i in 0..game_state.dim().0{
-        for j in 0..game_state.dim().1{
-                cells.push(game_state[(i,j)]);
+    for i in 0..game_state.game_state.dim().0{
+        for j in 0..game_state.game_state.dim().1{
+                cells.push(game_state.game_state[(i,j)]);
             }
         };
 
@@ -83,7 +83,7 @@ fn cells_matrix(game_state: &Game) -> Html {
     let mut column_index = 0;
     cells.iter().map(|cell_value| 
     { 
-        if column_index == game_state.dim().0 {
+        if column_index == game_state.game_state.dim().0 {
             column_index = 1;
             row_index += 1;
         }
