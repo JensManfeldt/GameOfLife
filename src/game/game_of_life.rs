@@ -23,6 +23,12 @@ pub struct Game {
     pub cell_state_rule: Box<dyn CellStateRule>,
 }
 
+impl Game {
+    pub fn get_game_size(&self) -> (usize, usize) {
+        self.game_state.dim()
+    }
+}
+
 pub fn new_game(height: usize, width: usize) -> Game {
     let game_state = GameRepresentation::from_shape_fn((height, width), |(i,j)| Cell::new(0, i, j));
     Game{game_state, cell_state_rule: Box::new(GameOfLifeRule)}
@@ -39,14 +45,14 @@ pub fn set_start(game: &mut Game){
 }
 
 pub fn update(game: &Game) -> Game {
-    let curr_size = game.game_state.dim();
+    let curr_size = game.get_game_size();
     let mut update_matrix = new_game(curr_size.0, curr_size.1);
 
     for i in 1..curr_size.0-1 {
         for j in 1..curr_size.1-1 {
     
             let cell = (i as usize, j as usize);
-            let new_cell_state = game.cell_state_rule.next_cell_state(&game, &game.game_state[cell]);
+            let new_cell_state = game.cell_state_rule.next_cell_state(game, &game.game_state[cell]);
 
             update_matrix.game_state[cell] = new_cell_state;
 
@@ -56,7 +62,7 @@ pub fn update(game: &Game) -> Game {
 }
 
 pub fn add_padding(game: &Game, padding: usize) -> Game {
-    let curr_size = game.game_state.dim();
+    let curr_size = game.get_game_size();
     let mut new_game = new_game(curr_size.0 + (2 * padding) , curr_size.1 + (2 * padding));
     for i in padding..curr_size.0 {
         for j in padding..curr_size.1 {
