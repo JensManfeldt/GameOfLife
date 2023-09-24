@@ -1,4 +1,5 @@
 use ndarray::Array2;
+use ndarray::s;
 use super::cell_state_rule::{CellStateRule, GameOfLifeRule};
 
 pub type Cell = GameCell;
@@ -48,16 +49,12 @@ pub fn update(game: &Game) -> Game {
     let curr_size = game.get_game_size();
     let mut update_matrix = new_game(curr_size.0, curr_size.1);
 
-    for i in 1..curr_size.0-1 {
-        for j in 1..curr_size.1-1 {
+    let updatedable_game = game.game_state.slice(s![1 .. curr_size.0 - 1, 1 .. curr_size.1 - 1]);
     
-            let cell = (i as usize, j as usize);
-            let new_cell_state = game.cell_state_rule.next_cell_state(game, &game.game_state[cell]);
-
-            update_matrix.game_state[cell] = new_cell_state;
-
-        }
+    for cell in updatedable_game.iter(){
+        update_matrix.game_state[(cell.x, cell.y)] = game.cell_state_rule.next_cell_state(game, cell);
     }
+
     update_matrix
 }
 
